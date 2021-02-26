@@ -27,8 +27,8 @@
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx-archetype-fxml</artifactId>
-      <version>0.0.3</version>
+      <artifactId>javafx-controls</artifactId>
+      <version>15.0.1</version>
   </dependency>
     <!--  Gson: Java to Json conversion -->
     <dependency>
@@ -84,7 +84,7 @@
         <plugin>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-maven-plugin</artifactId>
-          <version>0.0.3</version>
+          <version>0.0.5</version>
           <configuration>
               <mainClass>game.Main</mainClass>
           </configuration>

@@ -1,0 +1,78 @@
+package game.board;
+
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+/**
+ * @brief Representation of the gameboard. 
+ */
+public class BoardRepresentation extends StackPane {
+    public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight) {
+        this.pxlTileWidth = pxlWindowWidth / N_TILES_HOR;
+        this.pxlTileHeight = pxlWindowHeight / N_TILES_VER;
+
+
+        this.setPrefSize(pxlWindowWidth, pxlWindowHeight);
+
+        this.backgroundFill = new BackgroundFill(Color.rgb(187, 173, 160), CornerRadii.EMPTY, Insets.EMPTY);
+        this.background = new Background(this.backgroundFill);
+
+        this.setBackground(this.background);
+
+        this.backgroundTiles = new Pane();
+
+        Rectangle rectangle;
+
+        for (int i = 0; i < N_TILES_VER; ++i) {
+            for (int j = 0; j < N_TILES_HOR; ++j) {
+                rectangle = new Rectangle(
+                    j * this.pxlTileWidth + this.countXoffset(),
+                    i * this.pxlTileHeight + this.countYoffset(),
+                    this.pxlTileWidth - 2 * this.countXoffset(), 
+                    this.pxlTileHeight - 2 * this.countYoffset()
+                );
+
+                rectangle.setFill(Color.rgb(205, 193, 180));
+                rectangle.setArcWidth(this.countArcWidth());
+                rectangle.setArcHeight(this.countArcHeight());
+                this.backgroundTiles.getChildren().add(rectangle);
+            }
+        }
+
+        this.getChildren().add(this.backgroundTiles);
+    }
+
+    private int countXoffset() {
+        return this.pxlTileWidth / 16;
+    }
+
+    private int countYoffset() {
+        return this.pxlTileHeight / 16;
+    }
+
+    private int countArcWidth() {
+        return this.pxlTileWidth / 8;
+    }
+
+    private int countArcHeight() {
+        return this.pxlTileHeight / 8;
+    }
+
+
+    private final Background background; 
+    private final BackgroundFill backgroundFill;
+
+    private final Pane backgroundTiles;
+
+    private final int pxlTileWidth;
+    private final int pxlTileHeight;
+
+    private static final int N_TILES_VER = 4;
+    private static final int N_TILES_HOR = 4;
+}
