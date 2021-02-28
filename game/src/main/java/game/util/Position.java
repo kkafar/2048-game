@@ -3,19 +3,20 @@ package game.util;
 import java.util.Objects;
 
 public class Position {
-    public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Position(int row, int col) {
+        this.col = col;
+        this.row = row;
+    }
+
+    public Position(Position position) {
+        this.col = position.col;
+        this.row = position.row;
+    }
+
+    public String toString() {
+        return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";
     }
    
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) 
@@ -26,14 +27,14 @@ public class Position {
         
         Position that = (Position) other;
 
-        return (this.x == that.x && this.y == that.y);
+        return (this.col == that.col && this.row == that.row);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(col, row);
     }
 
-    private final int x;
-    private final int y;
+    public final int col;
+    public final int row;
 }
