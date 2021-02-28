@@ -19,9 +19,9 @@ public class BoardTest {
 
     @Test
     public void atTest() {
+        Board board = new Board();
         BoardTile boardTile = new BoardTile(BoardTile.VALID_VALUES.get(0), new Position(0, 0));
 
-        Board board = new Board();
 
         board.place(boardTile);
 
