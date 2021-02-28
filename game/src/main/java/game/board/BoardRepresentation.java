@@ -13,10 +13,12 @@ import javafx.scene.shape.Rectangle;
  * @brief Representation of the gameboard. 
  */
 public class BoardRepresentation extends StackPane {
-    public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight) {
+    public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight, Board board) {
         this.pxlTileWidth = pxlWindowWidth / Board.N_TILES_HOR;
         this.pxlTileHeight = pxlWindowHeight / Board.N_TILES_VER;
 
+        this.board = board;
+        this.board.addRepresentation(this);
 
         this.setPrefSize(pxlWindowWidth, pxlWindowHeight);
 
@@ -64,6 +66,8 @@ public class BoardRepresentation extends StackPane {
         return this.pxlTileHeight / 8;
     }
 
+
+    private Board board;
 
     private final Background background; 
     private final BackgroundFill backgroundFill;

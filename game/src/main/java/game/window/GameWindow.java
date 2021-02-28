@@ -1,14 +1,15 @@
 package game.window;
 
+import game.board.Board;
 import game.board.BoardRepresentation;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GameWindow {
-    public GameWindow(Stage stage) {
+    public GameWindow(Stage stage, Board board) {
         this.stage = stage;
 
-        this.board = new BoardRepresentation(PXL_WIDTH, PXL_HEIGHT);
+        this.board = new BoardRepresentation(PXL_WIDTH, PXL_HEIGHT, board);
 
         this.scene = new Scene(this.board , PXL_WIDTH, PXL_HEIGHT);
 

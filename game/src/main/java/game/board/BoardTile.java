@@ -12,6 +12,7 @@ public class BoardTile {
 
         this.value = value;
         this.position = position;
+        this.board = null;
     }
     
     public BoardTile(int value) {
@@ -22,24 +23,39 @@ public class BoardTile {
         return new Position(this.position);
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public void setPosition(Position newPosition) {
         position = newPosition;
     }
 
     public void setValue(int value) {
         if (!isValidValue(value))
-            throw new IllegalArgumentException("BoardTile: Invalid value for tile. Value: " + value);
+            throw new IllegalArgumentException("BoardTile: setValue: Invalid value for tile. Value: " + value);
         
         this.value = value;
     }
-    
-    private int value;
-    private Position position;
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void moveTo(Position newPosition) {        
+        if (newPosition.equals(this.position)) return;
+
+        position = newPosition;
+    }
     
     public static boolean isValidValue(int value) {
         return VALID_VALUES.contains(value);
     }
-    
+
+    private int value;
+    private Position position;
+    private Board board;
+
     /**
      * List of valid values for tile to have 
      */
