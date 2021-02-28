@@ -14,8 +14,8 @@ import javafx.scene.shape.Rectangle;
  */
 public class BoardRepresentation extends StackPane {
     public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight) {
-        this.pxlTileWidth = pxlWindowWidth / N_TILES_HOR;
-        this.pxlTileHeight = pxlWindowHeight / N_TILES_VER;
+        this.pxlTileWidth = pxlWindowWidth / Board.N_TILES_HOR;
+        this.pxlTileHeight = pxlWindowHeight / Board.N_TILES_VER;
 
 
         this.setPrefSize(pxlWindowWidth, pxlWindowHeight);
@@ -29,8 +29,8 @@ public class BoardRepresentation extends StackPane {
 
         Rectangle rectangle;
 
-        for (int i = 0; i < N_TILES_VER; ++i) {
-            for (int j = 0; j < N_TILES_HOR; ++j) {
+        for (int i = 0; i < Board.N_TILES_VER; ++i) {
+            for (int j = 0; j < Board.N_TILES_HOR; ++j) {
                 rectangle = new Rectangle(
                     j * this.pxlTileWidth + this.countXoffset(),
                     i * this.pxlTileHeight + this.countYoffset(),
@@ -72,7 +72,4 @@ public class BoardRepresentation extends StackPane {
 
     private final int pxlTileWidth;
     private final int pxlTileHeight;
-
-    private static final int N_TILES_VER = 4;
-    private static final int N_TILES_HOR = 4;
 }

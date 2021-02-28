@@ -23,7 +23,7 @@ public class BoardTileRepresentation extends Rectangle {
         this.valueLabel.setLabelFor(this);
         this.valueLabel.setAlignment(Pos.CENTER);
 
-        this.setValue(VALID_VALUES.get(0));
+        this.setValue(BoardTile.VALID_VALUES.get(0));
     }
 
     private void adjustColor() {
@@ -36,8 +36,8 @@ public class BoardTileRepresentation extends Rectangle {
     }
 
     public void setValue(int value) {
-        if (!VALID_VALUES.contains(value)) {
-            throw new IllegalArgumentException("BoardTile: " + value + " is an invalid value.");
+        if (!BoardTile.isValidValue(value)) {
+            throw new IllegalArgumentException("BoardTileRepresentation: " + value + " is an invalid value.");
         }
         this.value = value;
         this.adjustColor();
@@ -61,26 +61,19 @@ public class BoardTileRepresentation extends Rectangle {
     private Label valueLabel; 
 
     /**
-     * List of valid values for tile to have 
-     */
-    private static final ArrayList<Integer> VALID_VALUES = new ArrayList<>(
-        List.of(2, 4, 8, 16, 32, 64, 128, 256, 1024, 2048)
-    );
-
-    /**
      * Maping tile.value -> tile.color.
      */
     private static final Map<Integer, Color> VALUE_COLOR_MAP = Map.ofEntries(
-        new AbstractMap.SimpleImmutableEntry<>(2, Color.rgb(238, 228, 218)),
-        new AbstractMap.SimpleImmutableEntry<>(4, Color.rgb(237, 224, 201)),
-        new AbstractMap.SimpleImmutableEntry<>(8, Color.rgb(242, 177, 123)),
-        new AbstractMap.SimpleImmutableEntry<>(16, Color.rgb(245, 149, 101)),
-        new AbstractMap.SimpleImmutableEntry<>(32, Color.rgb(246, 124, 96)),
-        new AbstractMap.SimpleImmutableEntry<>(64, Color.rgb(247, 93, 60)),
-        new AbstractMap.SimpleImmutableEntry<>(128, Color.rgb(237, 208, 119)),
-        new AbstractMap.SimpleImmutableEntry<>(256, Color.rgb(237, 205, 103)),
-        new AbstractMap.SimpleImmutableEntry<>(512, Color.rgb(0, 0, 255)),
-        new AbstractMap.SimpleImmutableEntry<>(1024, Color.rgb(255, 0, 0)),
-        new AbstractMap.SimpleImmutableEntry<>(2048, Color.rgb(0, 255, 0))
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(0), Color.rgb(238, 228, 218)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(1), Color.rgb(237, 224, 201)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(2), Color.rgb(242, 177, 123)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(3), Color.rgb(245, 149, 101)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(4), Color.rgb(246, 124, 96)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(5), Color.rgb(247, 93, 60)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(6), Color.rgb(237, 208, 119)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(7), Color.rgb(237, 205, 103)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(8), Color.rgb(0, 0, 255)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(9), Color.rgb(255, 0, 0)),
+        new AbstractMap.SimpleImmutableEntry<>(BoardTile.VALID_VALUES.get(10), Color.rgb(0, 255, 0))
     );
 }

@@ -1,5 +1,5 @@
 package game;
 
-public class MainTest 
-{
+public class MainTest {
+
 }
