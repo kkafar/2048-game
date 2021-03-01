@@ -2,6 +2,7 @@ package game.board;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import game.util.Position;
 
@@ -9,22 +10,34 @@ public class Board implements IBoardTileObserver {
     public Board() {
         board = new BoardTile[N_TILES_VER][N_TILES_HOR];
 
-        for (int i = 0; i < N_TILES_VER; ++i) Arrays.fill(board[i], null);
-
         observers = new HashSet<>();
+        emptyPositions = new LinkedHashSet<>(N_TILES_HOR * N_TILES_VER);
+
+        for (int i = 0; i < N_TILES_VER; ++i) {
+            Arrays.fill(board[i], null);
+            for (int j = 0; j < N_TILES_HOR; ++j) {
+                emptyPositions.add(new Position(j, i));
+            }
+        }
     }
 
+    /**
+     * @brief access to tile at given position
+     * 
+     * @return
+     *      {@link BoardTile} at given position or null if there is no tile at give position
+     */
     public BoardTile at(Position position) {
-        // if (!isValidPosition(position))
-            // throw new IllegalArgumentException("Board: Invalid position. Position: " + position.toString());
-
         return board[position.row][position.col];
     }
 
+    /**
+     * @brief access to tile at given position
+     *
+     * @return
+     *      {@link BoardTile} at given position or null if there is no tile at given position
+     */
     public BoardTile at(int row, int col) {
-        // if (!isValidPosition(row, col))
-            // throw new IllegalArgumentException("Board: Invalid position. Position: " + new Position(row, col).toString());
-
         return board[row][col];
     }
 
@@ -43,7 +56,7 @@ public class Board implements IBoardTileObserver {
         tile.setPosition(position);
         tile.addObserver(this);
         board[position.row][position.col] = tile;
-
+        emptyPositions.remove(position);
         observers.forEach(obs -> {obs.onTilePlaced(tile);});
     } 
     
@@ -53,7 +66,7 @@ public class Board implements IBoardTileObserver {
         
         tile.addObserver(this);
         board[tile.getPosition().row][tile.getPosition().col] = tile;
-
+        emptyPositions.remove(tile.getPosition());
         observers.forEach(obs -> {obs.onTilePlaced(tile);});
     }
     
@@ -64,16 +77,25 @@ public class Board implements IBoardTileObserver {
         tile.setPosition(new Position(row, col));
         tile.addObserver(this);
         board[row][col] = tile;
-
+        emptyPositions.remove(tile.getPosition());
         observers.forEach(obs -> {obs.onTilePlaced(tile);});
     }
     
-    public void remove(BoardTile tile, int row, int col) {
-        if (isEmpty(row, col))
-            throw new IllegalArgumentException("Board: remove: Removing from empty position. Position: " + new Position(row, col).toString());
+    // public void remove(BoardTile tile, int row, int col) {
+    //     if (isEmpty(row, col))
+    //         throw new IllegalArgumentException("Board: remove: Removing from empty position. Position: " + new Position(row, col).toString());
         
-        board[row][col] = null;
+    //     board[row][col] = null;
+    //     emptyPositions.add(new Position(row, col));
+    //     observers.forEach(obs -> {obs.onTileRemoved(tile);});
+    // }
 
+    public void remove(BoardTile tile) {
+        if (isEmpty(tile.getPosition()))
+            throw new IllegalArgumentException("Board: remove: Removing from empty position. Position: " + tile.getPosition().toString());
+
+        board[tile.getPosition().row][tile.getPosition().col] = null;
+        emptyPositions.add(tile.getPosition());
         observers.forEach(obs -> {obs.onTileRemoved(tile);});
     }
 
@@ -93,7 +115,6 @@ public class Board implements IBoardTileObserver {
         observers.remove(observer);
     }
 
-
     @Override
     public void onTileMoved(BoardTile tile, Position oldPosition) {
         if (isEmpty(oldPosition))
@@ -111,6 +132,8 @@ public class Board implements IBoardTileObserver {
     private final BoardTile[][] board;    
 
     private final HashSet<IBoardObserver> observers;
+
+    private final LinkedHashSet<Position> emptyPositions;
 
     public static final int N_TILES_VER = 4;
     public static final int N_TILES_HOR = 4;
