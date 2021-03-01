@@ -62,6 +62,6 @@ public class BoardTile {
      * List of valid values for tile to have 
      */
     public static final ArrayList<Integer> VALID_VALUES = new ArrayList<>(
-        List.of(2, 4, 8, 16, 32, 64, 128, 256, 1024, 2048)
+        List.of(2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048)
     );
 }

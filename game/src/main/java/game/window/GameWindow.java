@@ -2,7 +2,6 @@ package game.window;
 
 import game.board.Board;
 import game.board.BoardRepresentation;
-import game.board.BoardTile;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
