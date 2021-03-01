@@ -1,5 +1,6 @@
 package game.board;
 
+import game.util.Position;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -12,13 +13,13 @@ import javafx.scene.shape.Rectangle;
 /**
  * @brief Representation of the gameboard. 
  */
-public class BoardRepresentation extends StackPane {
+public class BoardRepresentation extends StackPane implements IBoardObserver {
     public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight, Board board) {
         this.pxlTileWidth = pxlWindowWidth / Board.N_TILES_HOR;
         this.pxlTileHeight = pxlWindowHeight / Board.N_TILES_VER;
 
         this.board = board;
-        this.board.addRepresentation(this);
+        this.board.addObserver(this);
 
         this.setPrefSize(pxlWindowWidth, pxlWindowHeight);
 
@@ -47,7 +48,9 @@ public class BoardRepresentation extends StackPane {
             }
         }
 
-        this.getChildren().add(this.backgroundTiles);
+        this.tilesLayer = new Pane();
+
+        this.getChildren().addAll(this.backgroundTiles, this.tilesLayer);
     }
 
     private int countXoffset() {
@@ -66,8 +69,36 @@ public class BoardRepresentation extends StackPane {
         return this.pxlTileHeight / 8;
     }
 
+    public void place(BoardTile tile) {
+        BoardTileRepresentation newTile = new BoardTileRepresentation(
+            tile.getPosition().col * pxlTileWidth + countXoffset(),
+            tile.getPosition().row * pxlTileHeight + countYoffset(),
+            pxlTileWidth - 2 * countXoffset(),
+            pxlTileHeight - 2 * countYoffset()
+        );
 
-    private Board board;
+
+    }
+
+    @Override
+    public void onTilePlaced(BoardTile tile) {
+        place(tile);
+    }
+
+    @Override
+    public void onTileMoved(BoardTile tile, Position oldPosition) {
+
+    }
+
+    @Override
+    public void onTileRemoved(BoardTile tile) {
+
+    }
+    
+    
+    private final Board board;
+
+    private final Pane tilesLayer; 
 
     private final Background background; 
     private final BackgroundFill backgroundFill;

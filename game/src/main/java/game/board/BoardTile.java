@@ -1,6 +1,7 @@
 package game.board;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import game.util.Position;
@@ -12,11 +13,7 @@ public class BoardTile {
 
         this.value = value;
         this.position = position;
-        this.board = null;
-    }
-    
-    public BoardTile(int value) {
-        this(value, null);
+        observers = new HashSet<>();
     }
     
     public Position getPosition() {
@@ -25,6 +22,14 @@ public class BoardTile {
 
     public int getValue() {
         return value;
+    }
+
+    public void addObserver(IBoardTileObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(IBoardTileObserver observer) {
+        observers.remove(observer);
     }
 
     public void setPosition(Position newPosition) {
@@ -36,10 +41,6 @@ public class BoardTile {
             throw new IllegalArgumentException("BoardTile: setValue: Invalid value for tile. Value: " + value);
         
         this.value = value;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
     }
 
     public void moveTo(Position newPosition) {        
@@ -54,7 +55,8 @@ public class BoardTile {
 
     private int value;
     private Position position;
-    private Board board;
+
+    private final HashSet<IBoardTileObserver> observers;
 
     /**
      * List of valid values for tile to have 
