@@ -5,25 +5,35 @@ import java.util.Map;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
-public class BoardTileRepresentation extends Rectangle {
+public class BoardTileRepresentation extends StackPane {
     public BoardTileRepresentation(int x, int y, int width, int height, int value) {
-        super(x, y, width, height);
-        
+        super();
+
         if (x < 0 || y < 0 || width <= 0 || height <= 0) 
             throw new IllegalArgumentException("BoardTile: Invalid arguments passed to constructor. Args: x=" 
             + x + " y=" + y + " width=" + width + " height=" + height);
-        
-        if (!BoardTile.isValidValue(value)) 
-            throw new IllegalArgumentException("BoardTileRepresentation: Invalid value for tile. Value: " + value);
+
+        this.rectangle = new Rectangle(x, y, width, height);
+
+
+        this.setLayoutX(x);
+        this.setLayoutY(y);
+
         
         this.valueLabel = new Label();
         this.valueLabel.setLabelFor(this);
+        this.valueLabel.setTextFill(Color.WHITE);
         this.valueLabel.setAlignment(Pos.CENTER);
+        this.valueLabel.setFont(new Font(0.15 * (width + height)));
         
         this.setValue(value);
+
+        this.getChildren().addAll(this.rectangle, this.valueLabel);
     }
     
     public BoardTileRepresentation(int x, int y, int width, int height) {
@@ -32,14 +42,15 @@ public class BoardTileRepresentation extends Rectangle {
 
     private void adjustColor() {
         this.color = VALUE_COLOR_MAP.get(this.value);
-        this.setFill(this.color);
+        this.rectangle.setFill(this.color);
     }
 
     private void adjustLabel() {
+        System.out.println("BoardTileRepresentation: adjustLabel() executing...");
         this.valueLabel.setText(Integer.toString(this.value));
     }
 
-    public void setValue(int value) {
+    private void setValue(int value) {
         if (!BoardTile.isValidValue(value)) {
             throw new IllegalArgumentException("BoardTileRepresentation: " + value + " is an invalid value.");
         }
@@ -63,6 +74,9 @@ public class BoardTileRepresentation extends Rectangle {
     private int value;
 
     private Label valueLabel; 
+    private final Rectangle rectangle;
+
+    // private int fontSize;
 
     /**
      * Maping tile.value -> tile.color.
