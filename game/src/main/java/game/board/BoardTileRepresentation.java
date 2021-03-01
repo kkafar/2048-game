@@ -1,8 +1,6 @@
 package game.board;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Pos;
@@ -11,19 +9,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class BoardTileRepresentation extends Rectangle {
-    public BoardTileRepresentation(int x, int y, int width, int height) {
+    public BoardTileRepresentation(int x, int y, int width, int height, int value) {
         super(x, y, width, height);
-
-        if (x < 0 || y < 0 || width <= 0 || height <= 0) {
+        
+        if (x < 0 || y < 0 || width <= 0 || height <= 0) 
             throw new IllegalArgumentException("BoardTile: Invalid arguments passed to constructor. Args: x=" 
             + x + " y=" + y + " width=" + width + " height=" + height);
-        }
-
+        
+        if (!BoardTile.isValidValue(value)) 
+            throw new IllegalArgumentException("BoardTileRepresentation: Invalid value for tile. Value: " + value);
+        
         this.valueLabel = new Label();
         this.valueLabel.setLabelFor(this);
         this.valueLabel.setAlignment(Pos.CENTER);
-
-        this.setValue(BoardTile.VALID_VALUES.get(0));
+        
+        this.setValue(value);
+    }
+    
+    public BoardTileRepresentation(int x, int y, int width, int height) {
+        this(x, y, width, height, BoardTile.VALID_VALUES.get(0));
     }
 
     private void adjustColor() {
