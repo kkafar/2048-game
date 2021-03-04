@@ -1,7 +1,6 @@
-package game.board;
+package game.board.raw;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import game.util.Position;
@@ -13,7 +12,6 @@ public class BoardTile {
 
         this.value = value;
         this.position = position;
-        observers = new HashSet<>();
     }
     
     public Position getPosition() {
@@ -22,18 +20,6 @@ public class BoardTile {
 
     public int getValue() {
         return value;
-    }
-
-    public void addObserver(IBoardTileObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(IBoardTileObserver observer) {
-        observers.remove(observer);
-    }
-
-    public void setPosition(Position newPosition) {
-        position = newPosition;
     }
 
     public void setValue(int value) {
@@ -48,8 +34,13 @@ public class BoardTile {
 
         Position oldPosition = position;
         position = newPosition;
+    }
 
-        observers.forEach(obs -> { obs.onTileMoved(this, oldPosition); });
+    public void mergeWith(BoardTile other) {
+        if (this.value != other.value) 
+            throw new IllegalArgumentException("BoardTile: mergeWith: attempt to merge tiles with different values: " + this.value + " && " + other.value);
+
+        other.setValue(other.value + this.value);
     }
     
     public static boolean isValidValue(int value) {
@@ -58,8 +49,6 @@ public class BoardTile {
 
     private int value;
     private Position position;
-
-    private final HashSet<IBoardTileObserver> observers;
 
     /**
      * List of valid values for tile to have 

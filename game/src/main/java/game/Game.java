@@ -1,7 +1,6 @@
 package game;
 
-import game.board.Board;
-import game.board.BoardTile;
+import game.board.raw.*;
 import game.engine.Engine;
 import game.util.Position;
 import game.window.GameWindow;

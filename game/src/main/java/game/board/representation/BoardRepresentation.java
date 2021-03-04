@@ -1,8 +1,9 @@
-package game.board;
+package game.board.representation;
+
+import game.board.raw.*;
 
 import java.util.Arrays;
 
-import game.util.Position;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -15,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * @brief Representation of the gameboard. 
  */
-public class BoardRepresentation extends StackPane implements IBoardObserver, IBoardTileObserver {
+public class BoardRepresentation extends StackPane {
     public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight, Board board) {
 
         boardRepresentation = new BoardTileRepresentation[Board.N_TILES_VER][Board.N_TILES_VER];
@@ -25,7 +26,6 @@ public class BoardRepresentation extends StackPane implements IBoardObserver, IB
         this.pxlTileHeight = pxlWindowHeight / Board.N_TILES_VER;
 
         this.board = board;
-        this.board.addObserver(this);
 
         this.setPrefSize(pxlWindowWidth, pxlWindowHeight);
 
@@ -84,29 +84,8 @@ public class BoardRepresentation extends StackPane implements IBoardObserver, IB
             tile
         );
 
-        newTile.addObserver(this);
-
         boardRepresentation[tile.getPosition().row][tile.getPosition().col] = newTile;
         tilesLayer.getChildren().add(newTile);
-    }
-
-    @Override
-    public void onTilePlaced(BoardTile tile) {
-        place(tile);
-    }
-
-    @Override
-    public void onTileMoved(BoardTile tile, Position oldPosition) {
-        boardRepresentation[tile.getPosition().row][tile.getPosition().col] = boardRepresentation[oldPosition.row][oldPosition.col];
-        boardRepresentation[oldPosition.row][oldPosition.col] = null;
-        // TODO: animations
-    }
-
-    @Override
-    public void onTileRemoved(BoardTile tile) {
-        tilesLayer.getChildren().remove(boardRepresentation[tile.getPosition().row][tile.getPosition().col]);
-        boardRepresentation[tile.getPosition().row][tile.getPosition().col] = null;
-        // TODO: animations
     }
 
     

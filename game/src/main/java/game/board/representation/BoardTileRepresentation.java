@@ -1,10 +1,10 @@
-package game.board;
+package game.board.representation;
+
+import game.board.raw.BoardTile;
 
 import java.util.AbstractMap;
-import java.util.HashSet;
 import java.util.Map;
 
-import game.util.Position;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-public class BoardTileRepresentation extends StackPane implements IBoardTileObserver {
+public class BoardTileRepresentation extends StackPane {
     public BoardTileRepresentation(int x, int y, int width, int height, BoardTile tile) {
         super();
 
@@ -23,7 +23,6 @@ public class BoardTileRepresentation extends StackPane implements IBoardTileObse
         this.rectangle = new Rectangle(x, y, width, height);
 
         this.tile = tile;
-        this.tile.addObserver(this);
 
         this.setLayoutX(x);
         this.setLayoutY(y);
@@ -37,8 +36,6 @@ public class BoardTileRepresentation extends StackPane implements IBoardTileObse
         this.setValue(tile.getValue());
 
         this.getChildren().addAll(this.rectangle, this.valueLabel);
-
-        this.observers = new HashSet<>();
     }
     
     private void adjustColor() {
@@ -60,21 +57,6 @@ public class BoardTileRepresentation extends StackPane implements IBoardTileObse
         this.adjustLabel();
     }
 
-    public void addObserver(IBoardTileObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(IBoardTileObserver observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void onTileMoved(BoardTile tile, Position oldPosition) {
-
-    }
-
-
-
     /**
      * Current color of tile. Modifiable only by changing tile's value. 
      */
@@ -88,11 +70,6 @@ public class BoardTileRepresentation extends StackPane implements IBoardTileObse
     private Label valueLabel; 
     private final Rectangle rectangle;
     private final BoardTile tile;
-
-    private final HashSet<IBoardTileObserver> observers;
-
-
-    // private int fontSize;
 
     /**
      * Maping tile.value -> tile.color.

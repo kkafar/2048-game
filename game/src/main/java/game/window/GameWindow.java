@@ -1,8 +1,8 @@
 package game.window;
 
 
-import game.board.Board;
-import game.board.BoardRepresentation;
+import game.board.raw.Board;
+import game.board.representation.BoardRepresentation;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

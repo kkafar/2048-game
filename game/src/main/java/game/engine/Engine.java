@@ -1,7 +1,6 @@
 package game.engine;
 
-import game.board.Board;
-import game.board.BoardTile;
+import game.board.raw.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,13 +23,6 @@ public class Engine implements EventHandler<KeyEvent> {
         System.out.println("Engine: stopped...");
         this.status = EngineStatus.STOPPED;
     }
-
-        
-    private void mergeTiles(BoardTile tile1, BoardTile tile2) {
-        System.out.println("Engine: merging tiles: " + tile1.getPosition().toString() + " --> " + tile2.getPosition().toString());
-        
-    }
-
 
     @Override
     public void handle(KeyEvent event) {

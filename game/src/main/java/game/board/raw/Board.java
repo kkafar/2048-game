@@ -1,16 +1,14 @@
-package game.board;
+package game.board.raw;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import game.util.Position;
 
-public class Board implements IBoardTileObserver {
+public class Board {
     public Board() {
         board = new BoardTile[N_TILES_VER][N_TILES_HOR];
 
-        observers = new HashSet<>();
         emptyPositions = new LinkedHashSet<>(N_TILES_HOR * N_TILES_VER);
 
         for (int i = 0; i < N_TILES_VER; ++i) {
@@ -53,32 +51,25 @@ public class Board implements IBoardTileObserver {
         if (!isEmpty(position))
             throw new IllegalArgumentException("Board: Placing tile on not empty position. Position: " + position.toString());
 
-        tile.setPosition(position);
-        tile.addObserver(this);
         board[position.row][position.col] = tile;
         emptyPositions.remove(position);
-        observers.forEach(obs -> {obs.onTilePlaced(tile);});
     } 
     
     public void place(BoardTile tile) {
         if (!isEmpty(tile.getPosition()))
             throw new IllegalArgumentException("Board: Placing tile on not empty position. Position: " + tile.getPosition().toString());
         
-        tile.addObserver(this);
         board[tile.getPosition().row][tile.getPosition().col] = tile;
         emptyPositions.remove(tile.getPosition());
-        observers.forEach(obs -> {obs.onTilePlaced(tile);});
     }
     
     public void place(BoardTile tile, int row, int col) {
         if (!isEmpty(row, col))
             throw new IllegalArgumentException("Board: Placing tile on not empty position. Position: " + new Position(row, col).toString());
         
-        tile.setPosition(new Position(row, col));
-        tile.addObserver(this);
         board[row][col] = tile;
         emptyPositions.remove(tile.getPosition());
-        observers.forEach(obs -> {obs.onTilePlaced(tile);});
+
     }
     
     // public void remove(BoardTile tile, int row, int col) {
@@ -96,7 +87,6 @@ public class Board implements IBoardTileObserver {
 
         board[tile.getPosition().row][tile.getPosition().col] = null;
         emptyPositions.add(tile.getPosition());
-        observers.forEach(obs -> {obs.onTileRemoved(tile);});
     }
 
     public static boolean isValidPosition(Position position) {
@@ -107,29 +97,9 @@ public class Board implements IBoardTileObserver {
         return (row >= 0 && row < N_TILES_VER && col >= 0 && col < N_TILES_HOR);
     }
 
-    public void addObserver(IBoardObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(IBoardObserver observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void onTileMoved(BoardTile tile, Position oldPosition) {
-        if (isEmpty(oldPosition))
-            throw new IllegalArgumentException("Board: onTileMoved: Moving tile from empty position. Position: " + oldPosition.toString());
-        
-        // if (!isEmpty(position))
-        // what if moving onto not emppy position? 
-
-        board[oldPosition.row][oldPosition.col] = null;
-        board[tile.getPosition().row][tile.getPosition().col] = tile;    
-    }
 
     private final BoardTile[][] board;    
 
-    private final HashSet<IBoardObserver> observers;
     private final LinkedHashSet<Position> emptyPositions;
 
     public static final int N_TILES_VER = 4;
