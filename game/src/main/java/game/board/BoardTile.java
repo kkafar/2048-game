@@ -46,7 +46,10 @@ public class BoardTile {
     public void moveTo(Position newPosition) {        
         if (newPosition.equals(this.position)) return;
 
+        Position oldPosition = position;
         position = newPosition;
+
+        observers.forEach(obs -> { obs.onTileMoved(this, oldPosition); });
     }
     
     public static boolean isValidValue(int value) {

@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * @brief Representation of the gameboard. 
  */
-public class BoardRepresentation extends StackPane implements IBoardObserver {
+public class BoardRepresentation extends StackPane implements IBoardObserver, IBoardTileObserver {
     public BoardRepresentation(int pxlWindowWidth, int pxlWindowHeight, Board board) {
 
         boardRepresentation = new BoardTileRepresentation[Board.N_TILES_VER][Board.N_TILES_VER];
@@ -81,8 +81,11 @@ public class BoardRepresentation extends StackPane implements IBoardObserver {
             tile.getPosition().row * pxlTileHeight + countYoffset(),
             pxlTileWidth - 2 * countXoffset(),
             pxlTileHeight - 2 * countYoffset(),
-            tile.getValue()
+            tile
         );
+
+        newTile.addObserver(this);
+
         boardRepresentation[tile.getPosition().row][tile.getPosition().col] = newTile;
         tilesLayer.getChildren().add(newTile);
     }

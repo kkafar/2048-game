@@ -1,8 +1,10 @@
 package game.board;
 
 import java.util.AbstractMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import game.util.Position;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -10,8 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-public class BoardTileRepresentation extends StackPane {
-    public BoardTileRepresentation(int x, int y, int width, int height, int value) {
+public class BoardTileRepresentation extends StackPane implements IBoardTileObserver {
+    public BoardTileRepresentation(int x, int y, int width, int height, BoardTile tile) {
         super();
 
         if (x < 0 || y < 0 || width <= 0 || height <= 0) 
@@ -20,10 +22,11 @@ public class BoardTileRepresentation extends StackPane {
 
         this.rectangle = new Rectangle(x, y, width, height);
 
+        this.tile = tile;
+        this.tile.addObserver(this);
 
         this.setLayoutX(x);
         this.setLayoutY(y);
-
         
         this.valueLabel = new Label();
         this.valueLabel.setLabelFor(this);
@@ -31,15 +34,13 @@ public class BoardTileRepresentation extends StackPane {
         this.valueLabel.setAlignment(Pos.CENTER);
         this.valueLabel.setFont(new Font(0.15 * (width + height)));
         
-        this.setValue(value);
+        this.setValue(tile.getValue());
 
         this.getChildren().addAll(this.rectangle, this.valueLabel);
+
+        this.observers = new HashSet<>();
     }
     
-    public BoardTileRepresentation(int x, int y, int width, int height) {
-        this(x, y, width, height, BoardTile.VALID_VALUES.get(0));
-    }
-
     private void adjustColor() {
         this.color = VALUE_COLOR_MAP.get(this.value);
         this.rectangle.setFill(this.color);
@@ -59,9 +60,20 @@ public class BoardTileRepresentation extends StackPane {
         this.adjustLabel();
     }
 
-    public int getValue() {
-        return value;
+    public void addObserver(IBoardTileObserver observer) {
+        observers.add(observer);
     }
+
+    public void removeObserver(IBoardTileObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void onTileMoved(BoardTile tile, Position oldPosition) {
+
+    }
+
+
 
     /**
      * Current color of tile. Modifiable only by changing tile's value. 
@@ -75,6 +87,10 @@ public class BoardTileRepresentation extends StackPane {
 
     private Label valueLabel; 
     private final Rectangle rectangle;
+    private final BoardTile tile;
+
+    private final HashSet<IBoardTileObserver> observers;
+
 
     // private int fontSize;
 

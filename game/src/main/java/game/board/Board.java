@@ -125,14 +125,11 @@ public class Board implements IBoardTileObserver {
 
         board[oldPosition.row][oldPosition.col] = null;
         board[tile.getPosition().row][tile.getPosition().col] = tile;    
-            
-        observers.forEach(obs -> {obs.onTileMoved(tile, oldPosition);});
     }
 
     private final BoardTile[][] board;    
 
     private final HashSet<IBoardObserver> observers;
-
     private final LinkedHashSet<Position> emptyPositions;
 
     public static final int N_TILES_VER = 4;
