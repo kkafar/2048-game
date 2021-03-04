@@ -11,21 +11,24 @@ public class Game {
     public Game(Stage stage) {
         this.board = new Board();
 
-        this.engine = new Engine(board);
+        this.engine = new Engine(board, stage);
         
         this.window = new GameWindow(stage, board);
 
-        Position position = new Position(0, 0);
-        BoardTile tile = new BoardTile(128, position);
-        BoardTile tile2 = new BoardTile(2048, new Position(3, 3));
-
-        this.board.place(tile);
-        this.board.place(tile2);
+        int value = 2;
+        int counter = 0;
+        for (int i = 0; i < Board.N_TILES_VER; ++i) {
+            for (int j = 0; j < Board.N_TILES_HOR && counter < BoardTile.VALID_VALUES.size(); ++j) {
+                this.board.place(new BoardTile(value, new Position(i, j)));
+                counter++;
+                value *= 2;
+            }
+        }
     }
     
     public void start() {
         window.show();
-        // engine.start();
+        engine.start();
     }
 
 
