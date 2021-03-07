@@ -16,7 +16,7 @@ public class Position {
     public String toString() {
         return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";
     }
-   
+
     @Override
     public boolean equals(Object other) {
         if (this == other) 

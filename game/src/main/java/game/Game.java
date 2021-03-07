@@ -20,7 +20,7 @@ public class Game {
             for (int j = 0; j < Board.N_TILES_HOR && counter < BoardTile.VALID_VALUES.size(); ++j) {
                 this.board.place(new BoardTile(value, new Position(i, j)));
                 counter++;
-                value *= 2;
+                // value *= 2;
             }
         }
     }

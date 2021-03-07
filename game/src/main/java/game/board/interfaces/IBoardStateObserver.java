@@ -13,4 +13,6 @@ public interface IBoardStateObserver {
     public void onTileRemoved(BoardTile tile);
 
     public void onTileMoved(BoardTile tile, Position oldPosition);
+
+    public void onTileMerged(BoardTile tile, BoardTile mergedWith, Position oldTilePosition);
 }
